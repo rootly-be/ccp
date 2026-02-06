@@ -20,10 +20,7 @@
     "ci-cd",
     "project-bootstrap"
   ],
-  "commands": {
-    "path": "commands"
-  },
-  "skills": {
-    "path": "skills"
-  }
+  "commands": ["commands"],
+  "agents": ["agents"],
+  "skills": ["skills"]
 }
