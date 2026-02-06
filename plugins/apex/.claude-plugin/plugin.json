@@ -23,9 +23,6 @@
   "commands": {
     "path": "commands"
   },
-  "agents": {
-    "path": "agents"
-  },
   "skills": {
     "path": "skills"
   }
