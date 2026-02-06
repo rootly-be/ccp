@@ -1,26 +1,8 @@
 {
   "name": "apex",
   "version": "1.0.0",
-  "description": "APEX — Structured development workflow: Analyze → Plan → Execute → Validate → Security → Review → Tests → Docs → CI/CD. Subagent-driven, zero roleplay.",
+  "description": "APEX — Structured development workflow: Analyze, Plan, Execute, Validate, Security, Review, Tests, Docs, CI/CD.",
   "author": {
-    "name": "Rootly",
-    "email": "gregorymichel@rootly.be",
-    "url": "https://github.com/rootly-be"
-  },
-  "homepage": "https://github.com/rootly-be/ccp",
-  "repository": "https://github.com/rootly-be/ccp",
-  "license": "MIT",
-  "keywords": [
-    "development",
-    "workflow",
-    "devops",
-    "testing",
-    "security",
-    "code-review",
-    "ci-cd",
-    "project-bootstrap"
-  ],
-  "commands": ["commands"],
-  "agents": ["agents"],
-  "skills": ["skills"]
+    "name": "Rootly"
+  }
 }
