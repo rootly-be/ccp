@@ -5,7 +5,7 @@ description: "Bootstrap a full project from idea to deployable MVP. Brainstorm â
 
 # /apex-init â€” Full Project Bootstrap
 
-Read and follow the skill instructions in `.claude/skills/apex-init/SKILL.md`.
+Read and follow the APEX-Init skill instructions (SKILL.md from this plugin's `skills/apex-init/` directory).
 
 ## Quick Reference
 
@@ -52,7 +52,7 @@ Read and follow the skill instructions in `.claude/skills/apex-init/SKILL.md`.
 ## Workflow
 
 Execute phases in order. For each phase:
-1. Read the step file from `.claude/skills/apex-init/steps/{NN}-{step}.md`
+1. Read the step file from this plugin's `skills/apex-init/steps/{NN}-{step}.md`
 2. Spawn a subagent (unless `-e`) with the step instructions
 3. Collect output, run gate check
 4. If not `-a`, present summary and ask user to confirm/adjust

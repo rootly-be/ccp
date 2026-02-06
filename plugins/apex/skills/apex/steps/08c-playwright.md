@@ -5,7 +5,7 @@ Update or create Playwright E2E tests for the newly implemented feature.
 
 ## Subagent Instructions
 
-Spawn with `apex-playwright` agent from `.claude/agents/apex-playwright.md`.
+Spawn with the `apex-playwright` agent from this plugin.
 
 ### Inputs
 - Acceptance criteria from Phase 02 (Plan)

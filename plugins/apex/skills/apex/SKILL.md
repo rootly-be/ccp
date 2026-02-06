@@ -82,8 +82,8 @@ Before moving from one phase to the next:
 For each phase, spawn a subagent using the Task tool with:
 - **Description**: Clear, specific purpose (e.g., "Analyze codebase for task: {task}")
 - **Context**: Pass the task description + relevant outputs from previous phases
-- **Instructions**: Reference the step file: "Read and follow `.claude/skills/apex/steps/{NN}-{step}.md`"
-- **Agent**: Reference the agent file: "Load agent profile from `.claude/agents/apex-{role}.md`"
+- **Instructions**: Reference the step file: "Read and follow the apex skill's `steps/{NN}-{step}.md`"
+- **Agent**: Reference the agent profile: "Use the `apex-{role}` agent from this plugin"
 - **Constraints**: Read-only for analysis phases, write-enabled for execution phases
 
 ### Hook Integration

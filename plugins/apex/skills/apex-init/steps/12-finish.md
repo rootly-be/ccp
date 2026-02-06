@@ -10,7 +10,7 @@ You are the Finish subagent. Wrap up the project bootstrap.
 ### Process
 
 1. **Copy /apex skill** into the project:
-   - Copy `.claude/commands/apex.md` and `.claude/skills/apex/` into the project
+   - Ensure the APEX plugin is installed (or copy its commands and skills into the project's `.claude/` directory)
    - This enables the developer to immediately use `/apex` for iterative feature development
 
 2. **Git initialization**:

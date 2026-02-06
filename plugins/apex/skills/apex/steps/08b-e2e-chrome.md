@@ -5,7 +5,7 @@ After implementing a feature with /apex, validate it interactively via Chrome MC
 
 ## Subagent Instructions
 
-Spawn with `apex-e2e-chrome` agent from `.claude/agents/apex-e2e-chrome.md`.
+Spawn with the `apex-e2e-chrome` agent from this plugin.
 
 ### Inputs
 - Acceptance criteria from Phase 02 (Plan)

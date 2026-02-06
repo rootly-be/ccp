@@ -5,7 +5,7 @@ Generate persistent Playwright E2E tests that can run in CI, based on user stori
 
 ## Subagent Instructions
 
-Spawn this subagent with the `apex-playwright` agent definition from `.claude/agents/apex-playwright.md`.
+Spawn this subagent with the `apex-playwright` agent from this plugin.
 
 ### Inputs
 - User stories from `docs/stories/` (P0)

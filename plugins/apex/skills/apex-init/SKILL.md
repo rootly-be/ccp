@@ -119,8 +119,8 @@ Phases 02 (PRD) and 03 (Architecture) have **hard gates** — even in `--auto` m
 For each phase:
 ```
 Task: "APEX-Init Phase {N}: {phase name} — Project: {project_name}"
-Instructions: "Read .claude/skills/apex-init/steps/{NN}-{step}.md and follow the instructions."
-Agent: "Load agent profile from .claude/agents/apex-{role}.md"
+Instructions: "Read the apex-init skill's steps/{NN}-{step}.md and follow the instructions."
+Agent: "Use the apex-{role} agent from this plugin"
 Context: task description + previous phase summaries (compressed)
 ```
 
@@ -174,5 +174,5 @@ After `/apex-init` completes, the project is fully set up for iterative developm
 - `CLAUDE.md` documents the project conventions
 - `docs/prd.md` and `docs/architecture.md` are in place
 - `docs/stories/` contains the backlog
-- `.claude/commands/apex.md` and `.claude/skills/apex/` are available
+- The APEX plugin commands and skills are available
 - The developer can immediately use `/apex -a implement US-003` to pick up stories

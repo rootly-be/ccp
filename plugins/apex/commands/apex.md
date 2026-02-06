@@ -5,7 +5,7 @@ description: "APEX workflow: Analyze → Plan → Execute → Validate → Secur
 
 # /apex — APEX Development Workflow
 
-Read and follow the skill instructions in `.claude/skills/apex/SKILL.md`.
+Read and follow the APEX skill instructions (SKILL.md from this plugin's `skills/apex/` directory).
 
 ## Quick Reference
 
@@ -74,10 +74,10 @@ Disable with `--no-{flag}`: `--no-security`, `--no-examine`, etc.
 ## Workflow
 
 Execute phases in order. For each phase:
-1. Read the step file from `.claude/skills/apex/steps/{NN}-{step}.md`
+1. Read the step file from this plugin's `skills/apex/steps/{NN}-{step}.md`
 2. Spawn a subagent (unless `-e` economy mode) with the step instructions
 3. Collect the output
-4. Run gate check per `.claude/skills/apex/helpers.md#Gate-Check`
+4. Run gate check per this plugin's `skills/apex/helpers.md#Gate-Check`
 5. If not `-a`, present summary and ask user to proceed
 6. Pass summary to next phase
 

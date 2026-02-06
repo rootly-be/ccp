@@ -5,7 +5,7 @@ Validate the MVP interactively by driving a real browser through all P0 user sto
 
 ## Subagent Instructions
 
-Spawn this subagent with the `apex-e2e-chrome` agent definition from `.claude/agents/apex-e2e-chrome.md`.
+Spawn this subagent with the `apex-e2e-chrome` agent from this plugin.
 
 ### Inputs
 - User stories from `docs/stories/` (P0 only)
