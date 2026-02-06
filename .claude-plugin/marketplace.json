@@ -1,0 +1,20 @@
+{
+  "name": "ccp",
+  "owner": {
+    "name": "Rootly",
+    "email": "gregorymichel@rootly.be",
+    "url": "https://github.com/rootly-be"
+  },
+  "plugins": [
+    {
+      "name": "apex",
+      "source": "./plugins/apex",
+      "description": "APEX — Structured development workflow: Analyze → Plan → Execute → Validate → Security → Review → Tests → Docs → CI/CD. Subagent-driven, zero roleplay.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Rootly",
+        "url": "https://github.com/rootly-be"
+      }
+    }
+  ]
+}

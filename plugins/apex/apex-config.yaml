@@ -1,0 +1,250 @@
+# APEX Configuration
+# Place this file at .claude/apex-config.yaml
+# Global settings and hooks for /apex and /apex-init workflows
+
+# ============================================================
+# Global Settings
+# ============================================================
+settings:
+  # Default flags (can be overridden per invocation)
+  defaults:
+    auto: false
+    save: true
+    security: true
+    economy: false
+
+  # Notification channels
+  notifications:
+    slack_webhook: "${SLACK_WEBHOOK_URL}"
+    # gitlab_issue: true  # Auto-create/update GitLab issues
+
+  # Timeout per phase (seconds, 0 = no timeout)
+  timeouts:
+    analyze: 120
+    plan: 120
+    execute: 300
+    validate: 120
+    security: 120
+    review: 180
+    tests: 300
+    e2e-chrome: 600
+    playwright: 300
+    docker: 120
+    deploy: 120
+    cicd: 120
+    docs: 120
+
+# ============================================================
+# Phase Hooks — Pre/Post per phase
+# ============================================================
+# Available phases (both /apex and /apex-init):
+#   init, brainstorm, prd, architecture, scaffold,
+#   analyze, plan, execute, validate, security, review,
+#   tests, run-tests, e2e-chrome, playwright, docker,
+#   deploy, cicd, docs, finish
+#
+# Hook properties:
+#   script:    Shell command or path to script
+#   condition: Optional expression (see Conditions below)
+#   on_fail:   "continue" (default) | "halt" | "warn"
+#   env:       Additional environment variables
+#
+# Available variables in scripts:
+#   $APEX_TASK_ID       — Current task ID
+#   $APEX_PHASE         — Current phase name
+#   $APEX_PROJECT       — Project name
+#   $APEX_STATUS        — Phase status (in post hooks)
+#   $APEX_BRANCH        — Current git branch
+#   $APEX_FILES_CHANGED — Comma-separated list of changed files
+#   $APEX_STEP_OUTPUT   — Path to phase output file (in post hooks)
+#
+# Conditions:
+#   phase == 'execute'              — match specific phase
+#   status == 'FAIL'                — match phase outcome (post hooks)
+#   files_include('migrations/')    — changed files match pattern
+#   flag('--pr')                    — specific flag is active
+#   env_is('prod')                  — deployment target environment
+
+hooks:
+  # --- Pre-phase hooks (run BEFORE the phase starts) ---
+  # Scripts live in hooks/ — see hooks/README.md for details
+  pre:
+    # Backup DB before execute phase if migrations are involved
+    # - phase: execute
+    #   script: "./hooks/pre-execute-backup.sh"
+    #   condition: "files_include('migrations/')"
+    #   on_fail: halt
+
+    # Check cluster health before deploy
+    # - phase: deploy
+    #   script: "./hooks/pre-deploy-health.sh"
+    #   on_fail: halt
+
+  # --- Post-phase hooks (run AFTER the phase completes) ---
+  post:
+    # Notify Slack after successful deploy
+    # - phase: deploy
+    #   script: "./hooks/post-deploy-notify.sh"
+    #   condition: "status == 'PASS'"
+
+    # Run smoke test after deploy
+    # - phase: deploy
+    #   script: "./hooks/post-deploy-smoke.sh"
+    #   on_fail: warn
+
+# ============================================================
+# Lifecycle Hooks — Workflow-level events
+# ============================================================
+# Events:
+#   on-start:    Workflow begins
+#   on-complete: All phases finished successfully
+#   on-fail:     A phase failed and workflow halted
+#   on-gate:     A gate check is waiting for user input
+#   on-retry:    A phase is being retried after failure
+
+lifecycle:
+  # on-start:
+  #   - script: "./hooks/lifecycle-notify.sh start"
+  #
+  # on-complete:
+  #   - script: "./hooks/lifecycle-notify.sh complete"
+  #   - script: "./hooks/cleanup.sh"
+  #
+  # on-fail:
+  #   - script: "./hooks/lifecycle-notify.sh fail"
+  #
+  # on-gate:
+  #   - script: "echo 'Waiting for approval at ${APEX_PHASE}'"
+  #
+  # on-retry:
+  #   - script: "./hooks/lifecycle-notify.sh retry"
+
+# ============================================================
+# Git Hooks — Generated into the project
+# ============================================================
+# These are installed via husky (Node) or pre-commit (Python)
+# during scaffold or /apex-init finish phase.
+#
+# Framework auto-detection:
+#   Node projects → husky + lint-staged
+#   Python projects → pre-commit framework
+#   Go projects → pre-commit or custom scripts
+#
+# Set enabled: false to skip git hooks generation entirely
+
+git_hooks:
+  enabled: true
+  # framework: auto  # auto | husky | pre-commit | scripts
+
+  pre-commit:
+    - "npx lint-staged"            # Lint only staged files
+    # - "npx gitleaks detect --no-banner --staged"  # Secret detection
+
+  commit-msg:
+    - "npx --no -- commitlint --edit $1"  # Conventional commits
+
+  pre-push:
+    # - "npm run test -- --bail"   # Quick test before push
+    # - "npm run typecheck"        # Type check
+
+  # lint-staged config (Node.js projects only — used by husky pre-commit hook)
+  # For Python projects, linting is handled by the pre-commit framework (see helpers.md#Install-Git-Hooks)
+  lint-staged:
+    "*.{ts,tsx}":
+      - "eslint --fix"
+      - "prettier --write"
+    "*.{js,jsx}":
+      - "eslint --fix"
+      - "prettier --write"
+    "*.{css,scss,md,json,yaml,yml}":
+      - "prettier --write"
+
+# ============================================================
+# Pilot Mode — Autonomous Execution
+# ============================================================
+# See skills/apex/pilot.md for full specification
+
+pilot:
+  # Max retries per phase before HALT
+  max_retries:
+    validate: 2
+    tests: 5
+    review: 3
+    e2e-chrome: 2
+
+  # Security severity that triggers HALT (CRITICAL or HIGH)
+  security_halt_threshold: CRITICAL
+
+  # When a story HALTs in batch mode, continue to next story?
+  continue_on_story_halt: true
+
+  # Auto-commit after each completed story
+  auto_commit: true
+  commit_prefix: "feat"  # feat | fix | chore
+
+  # Generate consolidated report at end of session
+  report: true
+
+  # Soft time limit in minutes (logs warning, doesn't stop)
+  # time_limit_minutes: 120
+
+# ============================================================
+# Backlog & Story Tracking
+# ============================================================
+backlog:
+  # Source of truth file
+  file: "docs/backlog.yaml"
+  # Auto-update backlog when /apex completes a task
+  auto_update: true
+  # Auto-detect story reference in task description
+  auto_detect_story: true
+
+# ============================================================
+# GitLab Integration
+# ============================================================
+gitlab:
+  enabled: true
+  # Auto-sync backlog to GitLab Issues on every /apex task completion
+  auto_sync: true
+  # GitLab base URL (auto-detected from git remote, or override for self-hosted)
+  # base_url: "https://gitlab.example.com"
+  # GitLab project (auto-detected from git remote, or override here)
+  # project: "myorg/myapp"
+  # Custom label prefix (avoids conflicts with existing labels)
+  label_prefix: "APEX::"
+  # Board name to create
+  board_name: "APEX"
+  # Create a Kanban board on initial sync
+  create_board: true
+  # Sync acceptance criteria as checkboxes in issue descriptions
+  sync_checkboxes: true
+  # Add comments on issues when APEX updates them
+  add_comments: true
+
+# ============================================================
+# Per-Step Hook Overrides
+# ============================================================
+# Override specific hook behavior per step file.
+# Place a YAML frontmatter block in any step .md file:
+#
+# ---
+# hooks:
+#   pre:
+#     - script: "./hooks/custom-pre.sh"
+#       on_fail: halt
+#   post:
+#     - script: "./hooks/custom-post.sh"
+# ---
+#
+# Step-level hooks are merged with global hooks:
+# 1. Global pre hooks run first
+# 2. Step pre hooks run second
+# 3. Phase executes
+# 4. Step post hooks run first
+# 5. Global post hooks run second
+#
+# To SKIP global hooks for a specific step, add:
+# ---
+# hooks:
+#   skip_global: true
+# ---
